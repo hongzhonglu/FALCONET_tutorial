@@ -55,3 +55,7 @@ flux_map <- read_excel("data/flux_map.xlsx")
 fluxMapping(input_map ="result/model_test_check.xml",
               flux_inf = flux_map,
               output_map = "result/map_with_flux_value.xml")
+
+
+
+
