@@ -294,7 +294,7 @@ pathwayDesignMapping <- function(input_map, flux_inf, output_map) {
     
     # whether change width of reaction
     if (flux_data$value[i]=="NA"){
-      newwidth <- "width=\"2.0\""}
+      newwidth <- "width=\"1.0\""}
     else{
       newwidth <- "width=\"15.0\""
     }
@@ -368,5 +368,14 @@ improveMapConsistency <- function(input_map = "data/carbon metabolism.xml", outp
 improveMapConsistency(input_map = "data/carbon metabolism.xml", output_map = "data/carbon metabolism_update.xml")
 
 pathwayDesignMapping(input_map ="data/carbon metabolism_update.xml",
+                     flux_inf = rxnid_gpr,
+                     output_map = "result/map_core_metabolic_pathway_flux_fold_changes.xml")
+
+
+
+# test 3 - use a whole map
+improveMapConsistency(input_map = "data/Yeast8.xml", output_map = "data/Yeast8_update.xml")
+
+pathwayDesignMapping(input_map ="data/Yeast8_update2.xml",
                      flux_inf = rxnid_gpr,
                      output_map = "result/map_core_metabolic_pathway_flux_fold_changes.xml")
