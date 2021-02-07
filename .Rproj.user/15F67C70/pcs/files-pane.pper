@@ -1,0 +1,13 @@
+{
+    "path" : "~/Documents/GitHub/FALCONET_tutorial/data",
+    "sortOrder" : [
+        {
+            "ascending" : false,
+            "columnIndex" : 4
+        },
+        {
+            "ascending" : true,
+            "columnIndex" : 2
+        }
+    ]
+}
