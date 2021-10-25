@@ -1,7 +1,11 @@
 # An example to show how we can map the predicted gene targets on to the map
 # the xml file obtained based on the automatic layout.
 # otherwise the followed code can't be used
-
+library(stringr)
+library(tidyverse)
+library(readxl)
+library(hongR)
+library(FALCONET)
 
 ###### function to splite all the related genes
 ###### this function will be merged into FALCONET
@@ -202,10 +206,10 @@ defineRxnColorForDesign <- function(rxn_adjust, over_expression = "OE", down_reg
       color[i] <- "ffff0000" # red
     }
     else if (rxn_adjust[i] == down_regulation) {
-      color[i] <- "ff0000ff" # blue:ff0000ff  green: ff0eb10e
+      color[i] <- "ff009999"
     }
     else if (rxn_adjust[i] == knock_out) {
-      color[i] <- "ff009999" # yellow:ffffff66  grey:ffb3d2ff 
+      color[i] <- "ff0000ff" # blue
     }
     else {
       color[i] <- "ff000000"
@@ -311,10 +315,14 @@ pathwayDesignMapping <- function(input_map, flux_inf, output_map) {
 
 
 # input the rxn-GPR relations
-flux_map <- read_excel("data/flux_map.xlsx")
+flux_map <- read_excel("data/rxn_gene_yeast8.xlsx")
 rxnid_gpr <- flux_map[,c("GPR","Abbreviation")]
 rxnid_gpr <- rxnGeneMapping(rxnid_gpr)
 colnames(rxnid_gpr) <- c("Gene", "Abbreviation")
+
+
+# test1
+# model_test_check.xml is obtained based on the automatic layout of cellDesigner
 # input the gene targets
 predicted_targets <- read.table("data/isoleucine_targets.txt", header = TRUE, sep = "\t")
 predicted_targets <- predicted_targets[,c("genes","actions")]
@@ -322,15 +330,13 @@ predicted_targets <- predicted_targets[,c("genes","actions")]
 rxnid_gpr$actions <- getMultipleReactionFormula(predicted_targets$actions,predicted_targets$genes,rxnid_gpr$Gene)
 rxnid_gpr <- rxnid_gpr[!is.na(rxnid_gpr$actions),]
 rxnid_gpr$subsystem <- getSingleReactionFormula(flux_map$subsystem,flux_map$Abbreviation,rxnid_gpr$Abbreviation)
-
-
-# test1
-# model_test_check.xml is obtained based on the automatic layout of cellDesigner
 pathwayDesignMapping(input_map ="result/model_test_check.xml",
                 flux_inf = rxnid_gpr,
                 output_map = "result/map_with_ME_strategy.xml")
 
 # test2
+
+
 # for maps by Zhengming, need some quality improvement
 # carbon metabolism.xml is the core metabolite pathway by Zhengming
 improveMapConsistency <- function(input_map = "data/carbon metabolism.xml", output_map = "data/carbon metabolism_update.xml") {
@@ -367,15 +373,15 @@ pathwayDesignMapping(input_map ="data/carbon metabolism_update.xml",
 
 
 # test 3 - use a whole map
-improveMapConsistency(input_map = "data/Yeast8.xml", output_map = "data/Yeast8_update.xml")
+#improveMapConsistency(input_map = "data/Yeast8.xml", output_map = "data/Yeast8_update.xml")
 
-pathwayDesignMapping(input_map ="data/Yeast8_update.xml",
-                     flux_inf = rxnid_gpr,
-                     output_map = "result/Yeast8_update_ME_strategy.xml")
+#pathwayDesignMapping(input_map ="data/Yeast8_update.xml",
+                     #flux_inf = rxnid_gpr,
+                     #output_map = "result/Yeast8_update_ME_strategy.xml")
 # note: Yeast8_update2 is a new version of Yeast8 map after refining the layout
-pathwayDesignMapping(input_map ="data/Yeast8_v2.xml",
-                     flux_inf = rxnid_gpr,
-                     output_map = "result/Yeast8_v2_ME_strategy.xml")
+#pathwayDesignMapping(input_map ="data/Yeast8_v2.xml",
+                     #flux_inf = rxnid_gpr,
+                     #output_map = "result/Yeast8_v2_ME_strategy.xml")
 
 
 
@@ -392,24 +398,53 @@ colnames(rxnid_gpr) <- c("Gene", "Abbreviation")
 # input the gene targets
 product_list <- colnames(all_gene_targets)
 product_list0 <- product_list[5:length(product_list)]
-# one example
-product0 <- product_list0[1]
-product0 <- product_list0[45]
-predicted_targets <- all_gene_targets[,c("genes", product0)]
-predicted_targets <- predicted_targets[predicted_targets[[product0]] !=0,]
-predicted_targets$phenylethanol_fam_alc[predicted_targets[[product0]]==3] <- "OE"
-predicted_targets$phenylethanol_fam_alc[predicted_targets[[product0]]==2] <- "KD"
-predicted_targets$phenylethanol_fam_alc[predicted_targets[[product0]]==1] <- "KO"
-colnames(predicted_targets) <- c("genes","shortname", "actions")
 
-# mapping the gene's manipulation onto reactions
-rxnid_gpr$actions <- getMultipleReactionFormula(predicted_targets$actions,predicted_targets$genes,rxnid_gpr$Gene)
-rxnid_gpr <- rxnid_gpr[!is.na(rxnid_gpr$actions),]
-rxnid_gpr$subsystem <- getSingleReactionFormula(flux_map$subsystem,flux_map$Abbreviation,rxnid_gpr$Abbreviation)
 
-# define the output file name
-out_dir <- paste("result/Yeast8_v3_ME_strategy_for_",  product0, ".xml", sep = "")
-pathwayDesignMapping(input_map ="data/Yeast8_v3.xml",
-                     flux_inf = rxnid_gpr,
-                     output_map = out_dir)
+# input gene and reaction mapping from yeast8 
+flux_map <- read_excel("data/rxn_gene_yeast8.xlsx")
+rxnid_gpr <- flux_map[,c("GPR","Abbreviation")]
+rxnid_gpr <- rxnGeneMapping(rxnid_gpr)
+colnames(rxnid_gpr) <- c("Gene", "Abbreviation")
+
+
+
+
+
+# batch
+for (i in product_list0) {
+  product0 <- i
+  predicted_targets <- all_gene_targets[, c("genes", product0)]
+  
+  predicted_targets <- predicted_targets[predicted_targets[[product0]] != 0, ]
+  predicted_targets$actions <- NA
+  predicted_targets$actions[predicted_targets[[product0]] == 3] <- "OE"
+  predicted_targets$actions[predicted_targets[[product0]] == 2] <- "KD"
+  predicted_targets$actions[predicted_targets[[product0]] == 1] <- "KO"
+  colnames(predicted_targets) <- c("genes", "shortname", "actions")
+
+  # mapping the gene's manipulation onto reactions
+  rxnid_gpr0 <- rxnid_gpr
+  rxnid_gpr0$actions <- getMultipleReactionFormula(predicted_targets$actions, predicted_targets$genes, rxnid_gpr0$Gene)
+  rxnid_gpr0 <- rxnid_gpr0[!is.na(rxnid_gpr0$actions), ]
+  rxnid_gpr0$subsystem <- getSingleReactionFormula(flux_map$subsystem, flux_map$Abbreviation, rxnid_gpr0$Abbreviation)
+
+  # define the output file name
+  # out_dir <- paste("result/Yeast8_v3_ME_strategy_for_",  product0, ".xml", sep = "")
+  # pathwayDesignMapping(input_map ="data/Yeast8_v3.xml",
+  #                     flux_inf = rxnid_gpr0,
+  #                     output_map = out_dir)
+
+  # define the output file name
+  out_dir <- paste("result/Yeast8_v3_ME_strategy_for_", product0, ".xml", sep = "")
+  pathwayDesignMapping (
+    input_map = "data/Yeast8_v3_remove_gene_protein.xml",
+    flux_inf = rxnid_gpr0,
+    output_map = out_dir
+  )
+  
+
+}
+
+#main product families
+#alc, oAc, aro, alk, AAs, ter, FAL, fla, bio,stb
 

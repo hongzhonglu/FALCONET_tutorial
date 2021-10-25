@@ -8,14 +8,14 @@
 <celldesigner:listOfCompartmentAliases/>
 <celldesigner:listOfComplexSpeciesAliases/>
 <celldesigner:listOfSpeciesAliases>
-<celldesigner:speciesAlias id="sa3" species="s1">
+<celldesigner:speciesAlias id="sa3" species="s4">
 <celldesigner:activity>inactive</celldesigner:activity>
-<celldesigner:bounds x="57.0" y="53.5" w="118.0" h="23.0"/>
+<celldesigner:bounds x="382.0" y="173.5" w="120.0" h="28.0"/>
 <celldesigner:font size="12"/>
 <celldesigner:view state="usual"/>
 <celldesigner:usualView>
 <celldesigner:innerPosition x="0.0" y="0.0"/>
-<celldesigner:boxSize width="118.0" height="23.0"/>
+<celldesigner:boxSize width="120.0" height="28.0"/>
 <celldesigner:singleLine width="1.0"/>
 <celldesigner:paint color="ff0000ff" scheme="Color"/>
 </celldesigner:usualView>
@@ -29,7 +29,7 @@
 </celldesigner:speciesAlias>
 <celldesigner:speciesAlias id="sa4" species="s2">
 <celldesigner:activity>inactive</celldesigner:activity>
-<celldesigner:bounds x="57.0" y="15.5" w="117.0" h="27.0"/>
+<celldesigner:bounds x="72.0" y="176.5" w="117.0" h="27.0"/>
 <celldesigner:font size="12"/>
 <celldesigner:view state="usual"/>
 <celldesigner:usualView>
@@ -46,14 +46,14 @@
 </celldesigner:briefView>
 <celldesigner:info state="empty" angle="-1.5707963267948966"/>
 </celldesigner:speciesAlias>
-<celldesigner:speciesAlias id="sa5" species="s3">
+<celldesigner:speciesAlias id="sa5" species="s4">
 <celldesigner:activity>inactive</celldesigner:activity>
-<celldesigner:bounds x="58.0" y="83.5" w="70.0" h="25.0"/>
+<celldesigner:bounds x="232.0" y="175.5" w="107.0" h="27.0"/>
 <celldesigner:font size="12"/>
 <celldesigner:view state="usual"/>
 <celldesigner:usualView>
 <celldesigner:innerPosition x="0.0" y="0.0"/>
-<celldesigner:boxSize width="70.0" height="25.0"/>
+<celldesigner:boxSize width="107.0" height="27.0"/>
 <celldesigner:singleLine width="1.0"/>
 <celldesigner:paint color="ff009999" scheme="Color"/>
 </celldesigner:usualView>
@@ -69,9 +69,8 @@
 <celldesigner:listOfGroups/>
 <celldesigner:listOfProteins/>
 <celldesigner:listOfGenes>
-<celldesigner:gene id="gn2" name="Down-regulation" type="GENE"/>
 <celldesigner:gene id="gn3" name="Over-expression" type="GENE"/>
-<celldesigner:gene id="gn4" name="Knock-out" type="GENE"/>
+<celldesigner:gene id="gn5" name="Knock-out" type="GENE"/>
 </celldesigner:listOfGenes>
 <celldesigner:listOfRNAs/>
 <celldesigner:listOfAntisenseRNAs/>
@@ -110,17 +109,6 @@
 <compartment metaid="default" id="default" size="1" units="volume"/>
 </listOfCompartments>
 <listOfSpecies>
-<species metaid="s1" id="s1" name="Down-regulation" compartment="default" initialAmount="0">
-<annotation>
-<celldesigner:extension>
-<celldesigner:positionToCompartment>inside</celldesigner:positionToCompartment>
-<celldesigner:speciesIdentity>
-<celldesigner:class>GENE</celldesigner:class>
-<celldesigner:geneReference>gn2</celldesigner:geneReference>
-</celldesigner:speciesIdentity>
-</celldesigner:extension>
-</annotation>
-</species>
 <species metaid="s2" id="s2" name="Over-expression" compartment="default" initialAmount="0">
 <annotation>
 <celldesigner:extension>
@@ -132,13 +120,13 @@
 </celldesigner:extension>
 </annotation>
 </species>
-<species metaid="s3" id="s3" name="Knock-out" compartment="default" initialAmount="0">
+<species metaid="s4" id="s4" name="Knock-out" compartment="default" initialAmount="0">
 <annotation>
 <celldesigner:extension>
 <celldesigner:positionToCompartment>inside</celldesigner:positionToCompartment>
 <celldesigner:speciesIdentity>
 <celldesigner:class>GENE</celldesigner:class>
-<celldesigner:geneReference>gn4</celldesigner:geneReference>
+<celldesigner:geneReference>gn5</celldesigner:geneReference>
 </celldesigner:speciesIdentity>
 </celldesigner:extension>
 </annotation>
